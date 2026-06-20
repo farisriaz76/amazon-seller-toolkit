@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon A+ Content Image Size Checker - Verify Module Dimensions | Amazon Seller Toolkit</title>
+<meta name="description" content="Free Amazon A+ Content image size checker. Upload your image and instantly verify it matches the required dimensions for each A+ module type.">
+<style>
+  :root {
+    --orange: #FF9900;
+    --dark: #131921;
+    --light-bg: #F7F8FA;
+    --border: #E3E6E6;
+    --green: #067D62;
+    --red: #B12704;
+    --yellow: #8A6D00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--light-bg);
+    color: #0F1111;
+    line-height: 1.5;
+  }
+  header {
+    background: var(--dark);
+    color: white;
+    padding: 16px 24px;
+  }
+  header .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 20px; font-weight: 700; }
+  header h1 span { color: var(--orange); }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 { font-size: 17px; margin-bottom: 14px; color: var(--dark); }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #565959;
+  }
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  select:focus { outline: none; border-color: var(--orange); }
+
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--orange);
+    background: #FFF8EE;
+  }
+  .upload-zone p { color: #666; font-size: 14px; margin-top: 8px; }
+  .upload-zone .icon { font-size: 36px; }
+  #fileInput { display: none; }
+
+  .preview-area {
+    margin-top: 20px;
+    display: none;
+  }
+  .preview-area.show { display: block; }
+  .preview-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .preview-img-box {
+    flex: 0 0 auto;
+    max-width: 280px;
+  }
+  .preview-img-box img {
+    max-width: 100%;
+    max-height: 220px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: block;
+  }
+  .result-box { flex: 1; min-width: 240px; }
+
+  .result-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .result-line:last-child { border-bottom: none; }
+
+  .verdict {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+  }
+  .verdict-pass { background: #D5F5E3; color: var(--green); }
+  .verdict-fail { background: #FADBD8; color: var(--red); }
+  .verdict-close { background: #FFF3CD; color: var(--yellow); }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+  @media (max-width: 700px) {
+    .module-grid { grid-template-columns: 1fr; }
+  }
+  .module-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .module-item strong { display: block; font-size: 13px; }
+  .module-item span { color: #666; font-size: 12px; }
+
+  .other-tools { margin-top: 30px; }
+  .other-tools h3 { font-size: 16px; margin-bottom: 12px; }
+  .tools-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 800px) {
+    .tools-row { grid-template-columns: 1fr; }
+  }
+  .tool-link {
+    display: block;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--dark);
+  }
+  .tool-link strong { display: block; margin-bottom: 4px; }
+  .tool-link span { font-size: 13px; color: #666; }
+  .tool-link.active { border-color: var(--orange); border-width: 2px; }
+
+  footer { text-align: center; padding: 30px; font-size: 13px; color: #888; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Amazon Seller <span>Toolkit</span></h1>
+    <nav>
+      <a href="index.html">FBA Calculator</a>
+      <a href="character-counter.html">Character Counter</a>
+      <a href="image-checker.html">Image Checker</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+
+  <h2 style="margin-bottom:6px;">A+ Content Image Size Checker</h2>
+  <p style="color:#565959; margin-bottom:24px; font-size:14px;">
+    Upload your image and instantly verify it matches Amazon's required dimensions for your chosen A+ Content module. Everything runs in your browser — no images are uploaded to any server.
+  </p>
+
+  <div class="card">
+    <h2>1. Select Module Type</h2>
+    <div class="field">
+      <label for="moduleSelect">A+ Content Module</label>
+      <select id="moduleSelect">
+        <option value="970x600">Standard Image Header — 970 x 600 px</option>
+        <option value="970x300">Banner Module — 970 x 300 px</option>
+        <option value="300x300">Image + Text (3 images) — 300 x 300 px</option>
+        <option value="220x220">4-Image Grid — 220 x 220 px</option>
+        <option value="150x150">Comparison Chart (per product) — 150 x 150 px</option>
+        <option value="600x180">Brand Logo — 600 x 180 px</option>
+      </select>
+    </div>
+
+    <h2 style="margin-top:20px;">2. Upload Your Image</h2>
+    <div class="upload-zone" id="uploadZone">
+      <div class="icon">📤</div>
+      <p><strong>Click to upload</strong> or drag and drop your image here</p>
+      <p style="font-size:12px;">JPG or PNG — checked instantly, nothing leaves your browser</p>
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+
+    <div class="preview-area" id="previewArea">
+      <div class="preview-row">
+        <div class="preview-img-box">
+          <img id="previewImg" src="" alt="Preview">
+        </div>
+        <div class="result-box">
+          <div class="result-line"><span>Required Size</span><span id="requiredSize">-</span></div>
+          <div class="result-line"><span>Your Image Size</span><span id="actualSize">-</span></div>
+          <div class="result-line"><span>File Size</span><span id="fileSize">-</span></div>
+          <div class="verdict" id="verdict">Upload an image to check</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>All Standard Module Sizes (Reference)</h2>
+    <div class="module-grid">
+      <div class="module-item"><strong>Standard Image Header</strong><span>970 x 600 px</span></div>
+      <div class="module-item"><strong>Banner Module</strong><span>970 x 300 px</span></div>
+      <div class="module-item"><strong>Image + Text (3 images)</strong><span>300 x 300 px each</span></div>
+      <div class="module-item"><strong>4-Image Grid</strong><span>220 x 220 px each</span></div>
+      <div class="module-item"><strong>Comparison Chart</strong><span>150 x 150 px per product</span></div>
+      <div class="module-item"><strong>Brand Logo</strong><span>600 x 180 px</span></div>
+    </div>
+    <p style="font-size:13px; color:#666; margin-top:12px;"><em>Note: Amazon occasionally adjusts exact specs per module template. Always confirm in Seller Central's A+ Content Manager before finalizing your design.</em></p>
+  </div>
+
+  <div class="other-tools">
+    <h3>More Free Tools</h3>
+    <div class="tools-row">
+      <a href="index.html" class="tool-link">
+        <strong>📊 FBA Profit Calculator</strong>
+        <span>Calculate fees & net profit</span>
+      </a>
+      <a href="character-counter.html" class="tool-link">
+        <strong>✍️ Listing Character Counter</strong>
+        <span>Check title & bullet limits</span>
+      </a>
+      <a href="image-checker.html" class="tool-link active">
+        <strong>🖼️ A+ Image Size Checker</strong>
+        <span>Verify A+ Content dimensions</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Amazon Seller Toolkit — Free tools for Amazon sellers. Not affiliated with Amazon.com, Inc.
+</footer>
+
+<script>
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+const previewArea = document.getElementById('previewArea');
+const previewImg = document.getElementById('previewImg');
+const moduleSelect = document.getElementById('moduleSelect');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+
+uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) {
+    handleFile(e.dataTransfer.files[0]);
+  }
+});
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) handleFile(fileInput.files[0]);
+});
+
+moduleSelect.addEventListener('change', () => {
+  if (previewImg.src && previewImg.naturalWidth) {
+    runCheck(previewImg.naturalWidth, previewImg.naturalHeight, currentFileSizeKB);
+  }
+});
+
+let currentFileSizeKB = 0;
+
+function handleFile(file) {
+  if (!file.type.startsWith('image/')) {
+    alert('Please upload an image file (JPG or PNG).');
+    return;
+  }
+  currentFileSizeKB = (file.size / 1024).toFixed(1);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    previewImg.src = e.target.result;
+    previewImg.onload = function() {
+      previewArea.classList.add('show');
+      runCheck(previewImg.naturalWidth, previewImg.naturalHeight, currentFileSizeKB);
+    };
+  };
+  reader.readAsDataURL(file);
+}
+
+function runCheck(actualW, actualH, fileSizeKB) {
+  const [reqW, reqH] = moduleSelect.value.split('x').map(Number);
+
+  document.getElementById('requiredSize').textContent = reqW + ' x ' + reqH + ' px';
+  document.getElementById('actualSize').textContent = actualW + ' x ' + actualH + ' px';
+  document.getElementById('fileSize').textContent = fileSizeKB + ' KB' + (fileSizeKB > 2048 ? ' (over 2MB limit!)' : '');
+
+  const verdictEl = document.getElementById('verdict');
+
+  if (actualW === reqW && actualH === reqH) {
+    verdictEl.className = 'verdict verdict-pass';
+    verdictEl.textContent = '✅ Perfect Match — Ready to Upload';
+  } else {
+    const widthDiff = Math.abs(actualW - reqW);
+    const heightDiff = Math.abs(actualH - reqH);
+    const closeEnough = widthDiff <= 10 && heightDiff <= 10;
+
+    if (closeEnough) {
+      verdictEl.className = 'verdict verdict-close';
+      verdictEl.textContent = `⚠️ Close, but not exact — resize to ${reqW} x ${reqH} px`;
+    } else {
+      verdictEl.className = 'verdict verdict-fail';
+      const actualRatio = (actualW / actualH).toFixed(2);
+      const reqRatio = (reqW / reqH).toFixed(2);
+      let msg = `❌ Wrong Size — needs to be ${reqW} x ${reqH} px`;
+      if (actualRatio !== reqRatio) {
+        msg += ' (different aspect ratio — will get cropped/distorted)';
+      }
+      verdictEl.textContent = msg;
+    }
+  }
+}
+</script>
+
+</body>
+</html>
