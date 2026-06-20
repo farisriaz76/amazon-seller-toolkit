@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Listing Character Counter - Title & Bullet Point Limit Checker | Amazon Seller Toolkit</title>
+<meta name="description" content="Free Amazon listing character counter. Check your title, bullet points, and description against Amazon's exact character limits instantly.">
+<style>
+  :root {
+    --orange: #FF9900;
+    --dark: #131921;
+    --light-bg: #F7F8FA;
+    --border: #E3E6E6;
+    --green: #067D62;
+    --red: #B12704;
+    --yellow: #8A6D00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--light-bg);
+    color: #0F1111;
+    line-height: 1.5;
+  }
+  header {
+    background: var(--dark);
+    color: white;
+    padding: 16px 24px;
+  }
+  header .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  header h1 span { color: var(--orange); }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 17px;
+    margin-bottom: 4px;
+    color: var(--dark);
+  }
+  .limit-tag {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 14px;
+    display: block;
+  }
+  textarea, input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  textarea:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+  .counter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  .counter-bar .count { font-weight: 700; }
+  .status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+  .status-ok { background: #D5F5E3; color: var(--green); }
+  .status-warn { background: #FFF3CD; color: var(--yellow); }
+  .status-over { background: #FADBD8; color: var(--red); }
+
+  .bullet-row {
+    margin-bottom: 16px;
+  }
+  .bullet-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #565959;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .progress-track {
+    height: 4px;
+    background: #eee;
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.2s ease;
+  }
+  .progress-fill.warn { background: #E6A700; }
+  .progress-fill.over { background: var(--red); }
+
+  .summary-card {
+    background: var(--dark);
+    color: white;
+    border-radius: 8px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .summary-card .big {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .summary-card .label { font-size: 12px; color: #aaa; }
+
+  .other-tools { margin-top: 30px; }
+  .other-tools h3 { font-size: 16px; margin-bottom: 12px; }
+  .tools-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 800px) {
+    .tools-row { grid-template-columns: 1fr; }
+  }
+  .tool-link {
+    display: block;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--dark);
+  }
+  .tool-link strong { display: block; margin-bottom: 4px; }
+  .tool-link span { font-size: 13px; color: #666; }
+  .tool-link.active { border-color: var(--orange); border-width: 2px; }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    color: #888;
+  }
+
+  .info-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 10px;
+  }
+  .info-box h3 { font-size: 16px; margin-bottom: 10px; }
+  .info-box ul { font-size: 14px; color: #444; padding-left: 20px; }
+  .info-box li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Amazon Seller <span>Toolkit</span></h1>
+    <nav>
+      <a href="index.html">FBA Calculator</a>
+      <a href="character-counter.html">Character Counter</a>
+      <a href="image-checker.html">Image Checker</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+
+  <h2 style="margin-bottom:6px;">Amazon Listing Character Counter</h2>
+  <p style="color:#565959; margin-bottom:24px; font-size:14px;">
+    Check your title, bullet points, and description against Amazon's exact character limits — avoid listing errors before you publish.
+  </p>
+
+  <div class="summary-card">
+    <div>
+      <div class="label">Overall Status</div>
+      <div class="big" id="overallStatus">Start typing below</div>
+    </div>
+    <div>
+      <div class="label">Fields Within Limit</div>
+      <div class="big" id="fieldsOk">0 / 7</div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="card">
+    <h2>Product Title</h2>
+    <span class="limit-tag">Amazon limit: 200 characters</span>
+    <input type="text" id="title" placeholder="e.g. Vorelli Natural Stone Bath Mat - Non Slip Diatomite Shower Mat...">
+    <div class="counter-bar">
+      <span class="count" id="titleCount">0 / 200</span>
+      <span class="status-badge status-ok" id="titleStatus">OK</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="titleBar" style="width:0%"></div></div>
+  </div>
+
+  <!-- BULLETS -->
+  <div class="card">
+    <h2>Bullet Points</h2>
+    <span class="limit-tag">Amazon recommended limit: 255 characters each</span>
+
+    <div id="bulletsContainer"></div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="card">
+    <h2>Product Description</h2>
+    <span class="limit-tag">Amazon limit: 2000 characters</span>
+    <textarea id="description" rows="6" placeholder="Write your full product description here..."></textarea>
+    <div class="counter-bar">
+      <span class="count" id="descCount">0 / 2000</span>
+      <span class="status-badge status-ok" id="descStatus">OK</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="descBar" style="width:0%"></div></div>
+  </div>
+
+  <div class="info-box">
+    <h3>Amazon Character Limits Reference</h3>
+    <ul>
+      <li><strong>Title:</strong> 200 characters (most categories)</li>
+      <li><strong>Bullet Points:</strong> 255 characters recommended per bullet, 5 bullets max</li>
+      <li><strong>Description:</strong> 2000 characters</li>
+      <li><strong>Backend Search Terms:</strong> 250 bytes total (not shown here — varies by character type)</li>
+    </ul>
+    <p style="font-size:13px; color:#666; margin-top:10px;"><em>Note: Some categories have different limits. Always double check in Seller Central before publishing.</em></p>
+  </div>
+
+  <div class="other-tools">
+    <h3>More Free Tools</h3>
+    <div class="tools-row">
+      <a href="index.html" class="tool-link">
+        <strong>📊 FBA Profit Calculator</strong>
+        <span>Calculate fees & net profit</span>
+      </a>
+      <a href="character-counter.html" class="tool-link active">
+        <strong>✍️ Listing Character Counter</strong>
+        <span>Check title & bullet limits</span>
+      </a>
+      <a href="image-checker.html" class="tool-link">
+        <strong>🖼️ A+ Image Size Checker</strong>
+        <span>Verify A+ Content dimensions</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Amazon Seller Toolkit — Free tools for Amazon sellers. Not affiliated with Amazon.com, Inc.
+</footer>
+
+<script>
+const TITLE_LIMIT = 200;
+const BULLET_LIMIT = 255;
+const DESC_LIMIT = 2000;
+const NUM_BULLETS = 5;
+
+function updateBar(count, limit) {
+  const pct = Math.min((count / limit) * 100, 100);
+  let cls = '';
+  let status = 'OK';
+  let statusCls = 'status-ok';
+  if (count > limit) {
+    cls = 'over';
+    status = 'OVER LIMIT';
+    statusCls = 'status-over';
+  } else if (count >= limit * 0.9) {
+    cls = 'warn';
+    status = 'NEAR LIMIT';
+    statusCls = 'status-warn';
+  }
+  return { pct, cls, status, statusCls };
+}
+
+function checkAllOk() {
+  let okCount = 0;
+  let total = 2 + NUM_BULLETS; // title + description + bullets
+
+  const title = document.getElementById('title').value;
+  if (title.length > 0 && title.length <= TITLE_LIMIT) okCount++;
+
+  const desc = document.getElementById('description').value;
+  if (desc.length > 0 && desc.length <= DESC_LIMIT) okCount++;
+
+  for (let i = 1; i <= NUM_BULLETS; i++) {
+    const val = document.getElementById('bullet' + i).value;
+    if (val.length > 0 && val.length <= BULLET_LIMIT) okCount++;
+  }
+
+  document.getElementById('fieldsOk').textContent = okCount + ' / ' + total;
+
+  const overallEl = document.getElementById('overallStatus');
+  const anyOver = (title.length > TITLE_LIMIT) || (desc.length > DESC_LIMIT) ||
+    [1,2,3,4,5].some(i => document.getElementById('bullet'+i).value.length > BULLET_LIMIT);
+
+  if (anyOver) {
+    overallEl.textContent = '⚠️ Some fields over limit';
+    overallEl.style.color = '#FF6B6B';
+  } else if (okCount === total) {
+    overallEl.textContent = '✅ All fields ready';
+    overallEl.style.color = '#4ADE80';
+  } else {
+    overallEl.textContent = 'In progress...';
+    overallEl.style.color = 'white';
+  }
+}
+
+function setupCounter(inputId, countId, statusId, barId, limit) {
+  const input = document.getElementById(inputId);
+  input.addEventListener('input', function() {
+    const count = input.value.length;
+    document.getElementById(countId).textContent = count + ' / ' + limit;
+    const { pct, cls, status, statusCls } = updateBar(count, limit);
+    const bar = document.getElementById(barId);
+    bar.style.width = pct + '%';
+    bar.className = 'progress-fill' + (cls ? ' ' + cls : '');
+    const statusEl = document.getElementById(statusId);
+    statusEl.textContent = status;
+    statusEl.className = 'status-badge ' + statusCls;
+    checkAllOk();
+  });
+}
+
+// Build bullet point inputs dynamically
+const bulletsContainer = document.getElementById('bulletsContainer');
+for (let i = 1; i <= NUM_BULLETS; i++) {
+  const row = document.createElement('div');
+  row.className = 'bullet-row';
+  row.innerHTML = `
+    <label>Bullet Point ${i}</label>
+    <textarea id="bullet${i}" rows="2" placeholder="e.g. PREMIUM MATERIAL - Made from..."></textarea>
+    <div class="counter-bar">
+      <span class="count" id="bullet${i}Count">0 / ${BULLET_LIMIT}</span>
+      <span class="status-badge status-ok" id="bullet${i}Status">OK</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="bullet${i}Bar" style="width:0%"></div></div>
+  `;
+  bulletsContainer.appendChild(row);
+}
+
+// Setup listeners for title and description
+setupCounter('title', 'titleCount', 'titleStatus', 'titleBar', TITLE_LIMIT);
+setupCounter('description', 'descCount', 'descStatus', 'descBar', DESC_LIMIT);
+
+// Setup listeners for each bullet (must run after they're created above)
+for (let i = 1; i <= NUM_BULLETS; i++) {
+  setupCounter('bullet' + i, 'bullet' + i + 'Count', 'bullet' + i + 'Status', 'bullet' + i + 'Bar', BULLET_LIMIT);
+}
+</script>
+
+</body>
+</html>
