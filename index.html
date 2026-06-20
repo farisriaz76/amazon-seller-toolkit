@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon FBA Profit Calculator 2026 - Free Fee & Margin Calculator | Amazon Seller Toolkit</title>
+<meta name="description" content="Free Amazon FBA Profit Calculator. Calculate referral fees, fulfillment fees, fuel surcharge and net profit margin instantly for 2026 fee rates.">
+<style>
+  :root {
+    --orange: #FF9900;
+    --dark: #131921;
+    --light-bg: #F7F8FA;
+    --border: #E3E6E6;
+    --green: #067D62;
+    --red: #B12704;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--light-bg);
+    color: #0F1111;
+    line-height: 1.5;
+  }
+  header {
+    background: var(--dark);
+    color: white;
+    padding: 16px 24px;
+  }
+  header .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  header h1 span { color: var(--orange); }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 800px) {
+    .tool-grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+  .field {
+    margin-bottom: 16px;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #565959;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  button#calcBtn {
+    width: 100%;
+    background: var(--orange);
+    color: var(--dark);
+    border: none;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  button#calcBtn:hover { background: #e88a00; }
+
+  .results .line {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .results .line.total {
+    font-weight: 700;
+    font-size: 16px;
+    border-bottom: none;
+    padding-top: 14px;
+  }
+  .profit-positive { color: var(--green); }
+  .profit-negative { color: var(--red); }
+  .results .placeholder {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 0;
+  }
+  .margin-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 8px;
+  }
+  .badge-good { background: #D5F5E3; color: var(--green); }
+  .badge-mid { background: #FFF3CD; color: #8A6D00; }
+  .badge-bad { background: #FADBD8; color: var(--red); }
+
+  .info-box {
+    margin-top: 30px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .info-box h3 { font-size: 16px; margin-bottom: 10px; }
+  .info-box p { font-size: 14px; color: #444; margin-bottom: 10px; }
+  .info-box ul { font-size: 14px; color: #444; padding-left: 20px; margin-bottom: 10px;}
+
+  .other-tools {
+    margin-top: 30px;
+  }
+  .other-tools h3 { font-size: 16px; margin-bottom: 12px; }
+  .tools-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 800px) {
+    .tools-row { grid-template-columns: 1fr; }
+  }
+  .tool-link {
+    display: block;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--dark);
+  }
+  .tool-link strong { display: block; margin-bottom: 4px; }
+  .tool-link span { font-size: 13px; color: #666; }
+  .tool-link.active { border-color: var(--orange); border-width: 2px; }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    color: #888;
+  }
+  small.note {
+    display: block;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #999;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Amazon Seller <span>Toolkit</span></h1>
+    <nav>
+      <a href="index.html">FBA Calculator</a>
+      <a href="character-counter.html">Character Counter</a>
+      <a href="image-checker.html">Image Checker</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+
+  <h2 style="margin-bottom:6px;">Amazon FBA Profit Calculator (2026 Rates)</h2>
+  <p style="color:#565959; margin-bottom:24px; font-size:14px;">
+    Calculate your real Amazon referral fee, FBA fulfillment fee, fuel surcharge, and net profit margin — instantly, for free.
+  </p>
+
+  <div class="tool-grid">
+
+    <!-- INPUT CARD -->
+    <div class="card">
+      <h2>Enter Product Details</h2>
+
+      <div class="field">
+        <label for="sellingPrice">Selling Price ($)</label>
+        <input type="number" id="sellingPrice" placeholder="e.g. 24.99" step="0.01" min="0">
+      </div>
+
+      <div class="field">
+        <label for="productCost">Product Cost (manufacturing + shipping to you) ($)</label>
+        <input type="number" id="productCost" placeholder="e.g. 6.50" step="0.01" min="0">
+      </div>
+
+      <div class="field">
+        <label for="category">Product Category</label>
+        <select id="category">
+          <option value="0.15">Most Categories (15%)</option>
+          <option value="0.08">Amazon Devices / Personal Computers (8%)</option>
+          <option value="0.45">Amazon Device Accessories (45%)</option>
+          <option value="0.17">Jewelry (17% over $250)</option>
+          <option value="0.10">Furniture (10%)</option>
+          <option value="0.10">Beauty & Personal Care (10%)</option>
+          <option value="0.12">Clothing & Accessories (12%)</option>
+        </select>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="sizeTier">Size Tier</label>
+          <select id="sizeTier">
+            <option value="small_standard">Small Standard</option>
+            <option value="large_standard">Large Standard</option>
+            <option value="large_bulky">Large Bulky / Oversize</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="weight">Weight (lbs)</label>
+          <input type="number" id="weight" placeholder="e.g. 1.2" step="0.1" min="0">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="quarter">Time of Year (affects storage estimate)</label>
+        <select id="quarter">
+          <option value="0.78">Jan - Sep (Standard Storage)</option>
+          <option value="2.40">Oct - Dec / Q4 (Holiday Storage)</option>
+        </select>
+      </div>
+
+      <button id="calcBtn" onclick="calculateProfit()">Calculate Profit</button>
+    </div>
+
+    <!-- RESULTS CARD -->
+    <div class="card results">
+      <h2>Results</h2>
+      <div id="resultsBox">
+        <p class="placeholder">Fill in your product details and click Calculate to see your breakdown.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="info-box">
+    <h3>How This Calculator Works</h3>
+    <p>This tool estimates your Amazon FBA costs using 2026 fee rates:</p>
+    <ul>
+      <li><strong>Referral Fee:</strong> 8–45% depending on category (most categories: 15%)</li>
+      <li><strong>FBA Fulfillment Fee:</strong> based on size tier and weight, starting at $3.22 for small standard items</li>
+      <li><strong>Fuel Surcharge:</strong> 3.5% of the fulfillment fee (effective April 2026)</li>
+      <li><strong>Storage Fee:</strong> $0.78/cubic ft (Jan-Sep) or $2.40/cubic ft (Oct-Dec) — estimated, assumes 1 month storage</li>
+    </ul>
+    <p><em>Note: This is an estimate for planning purposes. Always confirm exact fees in your Amazon Seller Central account, as fees vary by exact product dimensions and category.</em></p>
+  </div>
+
+  <div class="other-tools">
+    <h3>More Free Tools</h3>
+    <div class="tools-row">
+      <a href="index.html" class="tool-link active">
+        <strong>📊 FBA Profit Calculator</strong>
+        <span>Calculate fees & net profit</span>
+      </a>
+      <a href="character-counter.html" class="tool-link">
+        <strong>✍️ Listing Character Counter</strong>
+        <span>Check title & bullet limits</span>
+      </a>
+      <a href="image-checker.html" class="tool-link">
+        <strong>🖼️ A+ Image Size Checker</strong>
+        <span>Verify A+ Content dimensions</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Amazon Seller Toolkit — Free tools for Amazon sellers. Not affiliated with Amazon.com, Inc.
+</footer>
+
+<script>
+function getFulfillmentFee(sizeTier, weight) {
+  // Simplified 2026 fulfillment fee logic based on size tier + weight tiers
+  weight = weight || 0;
+
+  if (sizeTier === "small_standard") {
+    if (weight <= 0.5) return 3.22;
+    if (weight <= 1) return 3.40;
+    if (weight <= 2) return 3.86;
+    return 4.50; // up to ~3lb small standard cap
+  }
+
+  if (sizeTier === "large_standard") {
+    if (weight <= 1) return 4.20;
+    if (weight <= 2) return 4.85;
+    if (weight <= 3) return 5.40;
+    if (weight <= 5) return 6.10;
+    if (weight <= 10) return 7.20;
+    if (weight <= 20) return 8.50;
+    return 8.50 + (weight - 20) * 0.15;
+  }
+
+  // large_bulky / oversize
+  if (weight <= 10) return 9.50;
+  if (weight <= 20) return 11.00;
+  if (weight <= 30) return 13.50;
+  if (weight <= 50) return 17.00;
+  return 17.00 + (weight - 50) * 0.20;
+}
+
+function estimateCubicFeet(sizeTier) {
+  // Rough average cubic footage assumption per tier for storage estimate
+  if (sizeTier === "small_standard") return 0.05;
+  if (sizeTier === "large_standard") return 0.35;
+  return 1.2; // large_bulky
+}
+
+function calculateProfit() {
+  const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
+  const productCost = parseFloat(document.getElementById('productCost').value) || 0;
+  const referralRate = parseFloat(document.getElementById('category').value);
+  const sizeTier = document.getElementById('sizeTier').value;
+  const weight = parseFloat(document.getElementById('weight').value) || 0;
+  const storageRate = parseFloat(document.getElementById('quarter').value);
+
+  const resultsBox = document.getElementById('resultsBox');
+
+  if (!sellingPrice || sellingPrice <= 0) {
+    resultsBox.innerHTML = '<p class="placeholder">Please enter a valid selling price.</p>';
+    return;
+  }
+
+  const referralFee = sellingPrice * referralRate;
+  const fulfillmentFee = getFulfillmentFee(sizeTier, weight);
+  const fuelSurcharge = fulfillmentFee * 0.035;
+  const cubicFeet = estimateCubicFeet(sizeTier);
+  const storageFee = cubicFeet * storageRate;
+
+  const totalAmazonFees = referralFee + fulfillmentFee + fuelSurcharge + storageFee;
+  const netProfit = sellingPrice - productCost - totalAmazonFees;
+  const profitMargin = (netProfit / sellingPrice) * 100;
+
+  let badgeClass = 'badge-bad';
+  let badgeText = 'Low Margin';
+  if (profitMargin >= 20) { badgeClass = 'badge-good'; badgeText = 'Healthy Margin'; }
+  else if (profitMargin >= 10) { badgeClass = 'badge-mid'; badgeText = 'Moderate Margin'; }
+
+  const profitClass = netProfit >= 0 ? 'profit-positive' : 'profit-negative';
+
+  resultsBox.innerHTML = `
+    <div class="line"><span>Selling Price</span><span>$${sellingPrice.toFixed(2)}</span></div>
+    <div class="line"><span>Product Cost</span><span>-$${productCost.toFixed(2)}</span></div>
+    <div class="line"><span>Referral Fee (${(referralRate*100).toFixed(0)}%)</span><span>-$${referralFee.toFixed(2)}</span></div>
+    <div class="line"><span>FBA Fulfillment Fee</span><span>-$${fulfillmentFee.toFixed(2)}</span></div>
+    <div class="line"><span>Fuel Surcharge (3.5%)</span><span>-$${fuelSurcharge.toFixed(2)}</span></div>
+    <div class="line"><span>Est. Storage Fee (1 mo)</span><span>-$${storageFee.toFixed(2)}</span></div>
+    <div class="line total"><span>Net Profit</span><span class="${profitClass}">$${netProfit.toFixed(2)}</span></div>
+    <div class="line" style="border-bottom:none;">
+      <span>Profit Margin</span>
+      <span>${profitMargin.toFixed(1)}% <span class="margin-badge ${badgeClass}">${badgeText}</span></span>
+    </div>
+    <small class="note">Estimates based on 2026 published Amazon fee rates. Actual fees may vary by exact dimensions/category — confirm in Seller Central.</small>
+  `;
+}
+</script>
+
+</body>
+</html>
